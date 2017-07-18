@@ -175,8 +175,9 @@ class KRB extends Component {
         prevPayDay = this._getDayMon(this.state.krb.payments[0]);
         // console.log(prevPayDay)
         this.state.krb.payments.forEach((payment) => {
-            // console.log(this._getDate(payment).date + ' ' + this._getDate(payment).time)
+
             if(this._getDate(payment).date !== 'NaN-NaN-NaN') {
+
                 let date = this._getDate(payment);
                 if (currentDate !== date.date) {
                     // console.log(date.date)
@@ -186,6 +187,7 @@ class KRB extends Component {
             }
 
             if (payment.match(/:/, '')) {
+              // console.log(payment, prevPayDay, paymentDate)
                 amountKrb = payment.replace(/.*?:/,'').replace(/:.*/,'') / KRB_SCALE;
                 krbCount += amountKrb;
                 krbCountCurrentDay += amountKrb;
@@ -283,7 +285,7 @@ class KRB extends Component {
 }
 
 function mapStateToProps({ krb }) {
-    console.log('mapStateToProps({ krb })', krb);
+    //console.log('mapStateToProps({ krb })', krb);
     return { krb };
 }
 
