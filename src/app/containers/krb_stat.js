@@ -195,7 +195,7 @@ class KRB extends Component {
 
                 if(prevPayDay !== paymentDate) {
                     // console.log('prevPayDay !== paymentDate', prevPayDay, paymentDate)
-                    paymentsList[i - 1][2] = krbCountCurrentDay.toString();
+                    paymentsList[i][2] = krbCountCurrentDay.toString();
                     paymentDaysList[paymentDaysList.length] = krbCount + (Number.parseFloat(prevPayDay) / 10000);
                     prevPayDay = paymentDate;
                     krbCountCurrentDay = 0;
