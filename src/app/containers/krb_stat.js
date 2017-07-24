@@ -113,6 +113,32 @@ class KRB extends Component {
        //     time: hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)
        // };
     }
+    _getKrbSatsTable() {
+      return (
+        <table className="table table-hover">
+            <thead>
+            <tr>
+                <th>balance</th>
+                <th>hashes</th>
+                <th>hashrate</th>
+                <th>hashrate (avg)</th>
+                <th>paid</th>
+                <th>last payments</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{_.round(this.state.krb.stats.balance / KRB_SCALE, 2)}</td>
+                    <td>{this.state.krb.stats.hashes}</td>
+                    <td>{this.state.krb.stats.hashrate}</td>
+                    <td>{hashrateAvg}</td>
+                    <td>{this.state.currentPay}</td>
+                    <td>{this.state.lastPayTime}</td>
+                </tr>
+            </tbody>
+        </table>
+      )
+    }
 
     render() {
         if(!Object.getOwnPropertyNames(this.props.krb).length) {return <div></div>;}
@@ -214,28 +240,7 @@ class KRB extends Component {
         return (
             <div>
                 KRB
-                <table className="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>balance</th>
-                        <th>hashes</th>
-                        <th>hashrate</th>
-                        <th>hashrate (avg)</th>
-                        <th>paid</th>
-                        <th>last payments</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{_.round(this.state.krb.stats.balance / KRB_SCALE, 2)}</td>
-                            <td>{this.state.krb.stats.hashes}</td>
-                            <td>{this.state.krb.stats.hashrate}</td>
-                            <td>{hashrateAvg}</td>
-                            <td>{this.state.currentPay}</td>
-                            <td>{this.state.lastPayTime}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                {/*this._getKrbSatsTable()*/}
             </div>
         )
     }
