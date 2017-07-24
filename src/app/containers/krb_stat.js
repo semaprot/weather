@@ -18,6 +18,9 @@ const styles = {
         textAlign: 'right',
         fontSize: '12px',
     },
+    component: {
+        paddingTop: "50px",
+    },
 };
 
 class KRB extends Component {
@@ -238,7 +241,7 @@ class KRB extends Component {
 
         // console.log(paymentsList, paymentDaysList)
         return (
-            <div>
+            <div style={styles.component}>
                 KRB
                 {/*this._getKrbSatsTable()*/}
             </div>
