@@ -253,7 +253,7 @@ class KRB extends Component {
                     legend_toggle
                 />
 
-                <Grid>
+                /*<Grid>
                     <Row>
                         <Col xs={6} md={6}>
                             <div style={styles.initDate}>{initDate.date + ' ' + initDate.time}</div>
@@ -278,7 +278,7 @@ class KRB extends Component {
                     width="100%"
                     height="400px"
                     legend_toggle
-                />
+                />*/
             </div>
         )
     }
