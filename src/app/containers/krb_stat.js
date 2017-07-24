@@ -236,49 +236,6 @@ class KRB extends Component {
                         </tr>
                     </tbody>
                 </table>
-
-                <Chart
-                    chartType="LineChart"
-                    rows={hashrateList}
-                    columns={columnsH}
-                    options={{
-                        title: 'Hashrate',
-                        hAxis: { title: 'Age' },
-                        vAxis: { title: 'Hashrate' },
-                        legend: 'none',
-                    }}
-                    graph_id="LineChart"
-                    width="100%"
-                    height="200px"
-                    legend_toggle
-                />
-
-                /*<Grid>
-                    <Row>
-                        <Col xs={6} md={6}>
-                            <div style={styles.initDate}>{initDate.date + ' ' + initDate.time}</div>
-                        </Col>
-                        <Col xs={6} md={6}>
-                            <div style={styles.lastDate}>{lastDate.date + ' ' + lastDate.time}</div>
-                        </Col>
-                    </Row>
-                </Grid>
-
-                <Chart
-                    chartType="ScatterChart"
-                    rows={paymentsList}
-                    columns={columns}
-                    options={{
-                        title: 'Karbowanec payments',
-                        hAxis: { ticks: paymentDaysList, title: 'Payments', minValue: paymentDaysList[0], maxValue: paymentDaysList[paymentDaysList.length - 1] },
-                        vAxis: { title: 'Karbowanec', minValue: 0, maxValue: 5 },
-                        legend: 'none',
-                    }}
-                    graph_id="ScatterChart"
-                    width="100%"
-                    height="400px"
-                    legend_toggle
-                />*/
             </div>
         )
     }
