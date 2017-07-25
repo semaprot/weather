@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
-import { fetchXmrStat } from '../actions/getXmrStat';
-import { fetchXmrBalance } from '../actions/getXmrBalance';
+import { fetchKrb } from '../actions/getKrbStat';
 
-const XMR_SCALE = 1000000000000;
+const KRB_SCALE = 1000000000000;
 const TICK_INTERVAL = 60000;
 const styles = {
     initDate: {
@@ -22,35 +21,29 @@ const styles = {
     },
 };
 
-class XMR extends Component {
+class KRB extends Component {
     constructor(props) {
         super(props);
 
-        this.props.fetchXmrStat();
-        this.props.fetchXmrBalance();
-
-        // console.log('balance: this.props.xmrBalance.xmrBalance.stats,', this.props.xmrStat)
-        this.state = {
-            miners: this.props.xmrStat.xmrStat,
-            time: Date.now()
-        };
-
+        this.props.fetchKrb();
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.log('nextProps', nextProps.xmrBalance.xmrBalance.stats)
+        // console.log('nextProps', nextProps)
         this.setState({
-            miners: nextProps.xmrStat.xmrStat,
-            stats: nextProps.xmrBalance.xmrBalance.stats,
+            charts: nextProps.krb.krb.charts,
+            payments: nextProps.krb.krb.payments,
+            stats:  nextProps.krb.krb.stats,
         })
     }
 
     componentDidMount() {
         this.interval = setInterval(() =>
             this.setState({
-                fetch: this.props.fetchXmrStat(),
-                miners: this.props.xmrStat.xmrStat,
-                stats: this.props.xmrBalance.xmrBalance.stats,
+                fetch: this.props.fetchKrb(),
+                charts: this.props.krb.krb.charts,
+                payments: this.props.krb.krb.payments,
+                stats:  this.props.krb.krb.stats,
                 time: Date.now()
             })
             , TICK_INTERVAL);
@@ -60,94 +53,123 @@ class XMR extends Component {
         clearInterval(this.interval);
     }
 
-    _replaceAdress(str) {
-        let adressPrefix = str.substring(0,4);
-        let missCharacters = '...';
-        let adress = !str.match(/(.*[.])/g) ? str : str.match(/(.*[.])/g)[0];
-        let minerID = str.match(/([.].*)/g, ) || '';
-        let adressSuffix = adress.substring(adress.length - 5, adress.length - 1);
-
-        return adressPrefix + missCharacters + adressSuffix + minerID;
-    }
-
     _getDate(timestamp) {
         let date = new Date(timestamp*1000);
-        let day = date.getDay();
+        let day = date.getDate();
         let month = date.getMonth() + 1;
         let year = date.getFullYear();
         let hours = date.getHours();
-        let minutes = "0" + date.getMinutes();
-        let seconds = "0" + date.getSeconds();
+        let minutes = date.getMinutes() < 9 ? "0" + date.getMinutes() : date.getMinutes();
+        let seconds = date.getSeconds() < 9 ? "0" + date.getSeconds() : date.getSeconds();
 
-       return day + '-' + month + '-' + year + '  ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+       return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
     }
 
+    _isDate(timestamp) {
+      // console.log('timestamp', timestamp.length);
+        let isDate = false
+        let date = new Date(timestamp*1000);
+        let today = new Date();
+
+        // console.log('date, today', date.getFullYear() <= today.getFullYear());
+
+        if(date.getFullYear() <= today.getFullYear()) {
+          isDate = true;
+        }
+
+       return isDate;
+    }
+
+    _getKrbSatsTable() {
+      return (
+        <table className="table table-hover">
+            <thead>
+            <tr>
+                <th>balance</th>
+                <th>hashes</th>
+                <th>hashrate</th>
+                <th>paid</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{_.round(this.state.stats.balance / KRB_SCALE, 2)}</td>
+                    <td>{this.state.stats.hashes}</td>
+                    <td>{this.state.stats.hashrate}</td>
+                    <td>{this.state.stats.paid  / KRB_SCALE}</td>
+                </tr>
+            </tbody>
+        </table>
+      )
+    }
+
+    _getKrbPaymentsRows(payments) {
+      let paymentIndex = 0;
+      let paymentList = [{paymentsDate: null, paymentsAmount: null}]
+      let paymentsDate;
+      let paymentsAmount = 0;
+
+      payments.forEach((payment, i) => {
+        if(this._isDate(payment.replace(/.*?:/,'').replace(/:.*/,''))) {
+          // console.log('paymentsDate', this._getDate(payment.replace(/.*?:/,'').replace(/:.*/,'')))
+            paymentList[paymentIndex].paymentsDate = this._getDate(payment.replace(/.*?:/,'').replace(/:.*/,''));
+            paymentIndex++;
+        } else {
+          // console.log('paymentsAmount', payment.replace(/.*?:/,'').replace(/:.*/,'') / KRB_SCALE);
+            paymentList[paymentIndex] = {paymentsAmount: payment.replace(/.*?:/,'').replace(/:.*/,'') / KRB_SCALE, paymentsDate: null};
+        }
+      })
+
+      // return (
+        return paymentList.map((paymentRow) => {
+          // console.log(paymentRow)
+          return (
+              <tr key={paymentRow.paymentsDate}>
+                  <td>{paymentRow.paymentsDate}</td>
+                  <td>{paymentRow.paymentsAmount}</td>
+              </tr>
+          );
+        })
+      // )
+    }
+
+
     render() {
-        if(!Object.getOwnPropertyNames(this.props.xmrStat).length) {return <div></div>;}
-        let hashrateList = [];
+        if(!Object.getOwnPropertyNames(this.props.krb).length) {return <div></div>;}
+        // let hashrateList = [];
 
         return (
             <div style={styles.component}>
-                XMR
+                KRB
+                {/*console.log(this.state)*/}
+                {this._getKrbSatsTable()}
+
                 <table className="table table-hover">
                     <thead>
                     <tr>
-                        <th>adress</th>
-                        <th>balance</th>
-                        <th>hashes</th>
-                        <th>hashrate</th>
+                        <th>date/time</th>
                         <th>paid</th>
                     </tr>
                     </thead>
                     <tbody>
-                            <tr key={"total-balance"}>
-                                <td>Total balance</td>
-                                <td>{_.round(this.state.stats.balance / XMR_SCALE, 6) || 0}</td>
-                                <td>{this.state.stats.hashes}</td>
-                                <td></td>
-                                <td>{_.round(this.state.stats.paid / XMR_SCALE, 2) || 0}</td>
-                            </tr>
-                            {
-                                this.state.miners.map((miner) => {
-                                    if(miner.hashrate == 0) {return;};
-                                    return (
-                                        <tr key={this._replaceAdress(miner.address)}>
-                                            <td>{this._replaceAdress(miner.address)}</td>
-                                            <td>{_.round(miner.balance / XMR_SCALE, 2) || 0}</td>
-                                            <td>{miner.hashes}</td>
-                                            <td>{_.round(miner.hashrate, 2)}</td>
-                                            <td>{_.round(miner.paid / XMR_SCALE, 2) || 0}</td>
-                                        </tr>
-                                    )
-                                })
-                            }
+                      {this._getKrbPaymentsRows(this.state.payments)}
                     </tbody>
                 </table>
 
-                <Chart data={hashrateList} color="blue" />
 
-                <Grid>
-                    <Row>
-                        <Col xs={6} md={6}>
-                            <div style={styles.initDate}>{/*this._getDate(this.state.xmr.charts.hashrate[0][0])*/}</div>
-                        </Col>
-                        <Col xs={6} md={6}>
-                            <div style={styles.lastDate}>{/*this._getDate(this.state.xmr.charts.hashrate[this.state.xmr.charts.hashrate.length - 1][0])*/}</div>
-                        </Col>
-                    </Row>
-                </Grid>
+
             </div>
         )
     }
 }
 
-function mapStateToProps({ xmrStat, xmrBalance }) {
-    // console.log('mapStateToProps({ xmrBalance })', xmrBalance);
-    return { xmrStat, xmrBalance };
+function mapStateToProps({ krb }) {
+    // console.log('mapStateToProps({ fetchKrb })', fetchKrb);
+    return { krb };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchXmrStat, fetchXmrBalance }, dispatch);
+    return bindActionCreators({ fetchKrb }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(XMR);
+export default connect(mapStateToProps, mapDispatchToProps)(KRB);
