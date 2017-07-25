@@ -65,6 +65,13 @@ class KRB extends Component {
        return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
     }
 
+    _getDay(timestamp) {
+        let date = new Date(timestamp*1000);
+        let day = date.getDate();
+
+       return day;
+    }
+
     _isDate(timestamp) {
       // console.log('timestamp', timestamp.length);
         let isDate = false
@@ -105,20 +112,70 @@ class KRB extends Component {
 
     _getKrbPaymentsRows(payments) {
       let paymentIndex = 0;
-      let paymentList = [{paymentsDate: null, paymentsAmount: null}]
+      let paymentList = [{paymentsDate: null, paymentsAmount: null}];
+      let paymentDailyList = [{paymentsDate: null, paymentsAmount: null}]
       let paymentsDate;
       let paymentsAmount = 0;
+      let currentDate;
+      let currentDay;
+      let prevDate;
 
-      payments.forEach((payment, i) => {
-        if(this._isDate(payment.replace(/.*?:/,'').replace(/:.*/,''))) {
+      payments.map((payment) => {
+        // console.log(payment)
+        currentDate = payment.replace(/.*?:/,'').replace(/:.*/,'');
+        currentDay = this._getDay(currentDate);
+
+
+        if(this._isDate(currentDate)) {
           // console.log('paymentsDate', this._getDate(payment.replace(/.*?:/,'').replace(/:.*/,'')))
-            paymentList[paymentIndex].paymentsDate = this._getDate(payment.replace(/.*?:/,'').replace(/:.*/,''));
-            paymentIndex++;
+          // console.log('prevDate == currentDate', prevDate, currentDay);
+
+            if(prevDate == currentDay) {
+              console.log('prevDate == currentDay, paymentIndex', prevDate, currentDay, paymentsAmount, paymentIndex);
+              paymentList[paymentIndex - 1].paymentsAmount += paymentsAmount;
+            } else {
+              console.log('prevDate !== currentDay, paymentIndex', prevDate, currentDay, paymentsAmount, paymentIndex);
+              paymentList[paymentIndex] = {paymentsAmount: paymentsAmount, paymentsDate: this._getDate(currentDate)};
+              // paymentList[paymentIndex].paymentsDate = this._getDate(currentDate);
+              prevDate = currentDay;
+              paymentIndex++;
+            }
+            // console.log(paymentList[paymentIndex].paymentsAmount, currentDate)
+
         } else {
+          paymentsAmount = currentDate / KRB_SCALE;
           // console.log('paymentsAmount', payment.replace(/.*?:/,'').replace(/:.*/,'') / KRB_SCALE);
-            paymentList[paymentIndex] = {paymentsAmount: payment.replace(/.*?:/,'').replace(/:.*/,'') / KRB_SCALE, paymentsDate: null};
+          // if(prevDate == currentDay) {
+          //
+          //   paymentList[paymentIndex].paymentsAmount += currentDate / KRB_SCALE;
+          //   // console.log(currentDay, paymentList[paymentIndex].paymentsAmount, currentDate / KRB_SCALE)
+          // } else {
+          //   paymentList[paymentIndex] = {paymentsAmount: currentDate / KRB_SCALE, paymentsDate: null};
+          // }
+
         }
       })
+
+      // paymentsMap1.entrySeq().forEach(e => console.log(`key: ${e[0]}, value: ${e[1]}`));
+
+      // paymentIndex = 0;
+      // prevDate = paymentList[0].paymentsDate;
+      // paymentsAmount = paymentList[0].paymentsAmount;
+      // paymentDailyList[paymentIndex] = {paymentsAmount: paymentsAmount, paymentsDate: prevDate};
+      // paymentIndex++;
+      //
+      // paymentList.map((paymentRow) => {
+      //   if(prevDate == paymentRow.paymentsDate) {
+      //     paymentsAmount += paymentRow.paymentsAmount;
+      //     paymentDailyList[paymentIndex] = {paymentsAmount: paymentsAmount, paymentsDate: paymentRow.paymentsDate};
+      //   } else {
+      //     prevDate = paymentRow.paymentsDate;
+      //     paymentDailyList[paymentIndex] = {paymentsAmount: paymentRow.paymentsAmount, paymentsDate: paymentRow.paymentsDate};
+      //     paymentIndex++;
+      //   }
+      // })
+
+      console.log(paymentList);
 
       // return (
         return paymentList.map((paymentRow) => {
