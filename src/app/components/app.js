@@ -20,7 +20,7 @@ export default class App extends Component {
         {/*<SearchBar />*/}
         {/*<WeatherList />*/}
         {<KrbStat />}
-        {/*<XmrStat />*/}
+        {<XmrStat />}
           {/*this._replaceAdress('4AF4HTbwQ3d9SbdKNUsPU39HTuLwEMtcY3mmTwtufSPPDbqBsUSsskq7tXDfNDZ8bj6T3Wyv9yY2xcH8FN2i36ZjD2RW4e6.IP42')*/}
 
         <hr />
