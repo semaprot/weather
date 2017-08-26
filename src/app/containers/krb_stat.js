@@ -5,7 +5,9 @@ import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { fetchKrb } from '../actions/getKrbStat';
 import { fetchKrbBtc } from '../actions/getKrbBtc';
+import { fetchUahBtc } from '../actions/getUahBtc';
 import { fetchUsdBtc } from '../actions/getUsdBtc';
+import { fetchEurBtc } from '../actions/getEurBtc';
 
 const KRB_SCALE = 1000000000000;
 const TICK_INTERVAL = 60000;
@@ -31,15 +33,22 @@ class KRB extends Component {
 
         this.props.fetchKrb();
         this.props.fetchKrbBtc();
+        this.props.fetchUahBtc();
         this.props.fetchUsdBtc();
+        this.props.fetchEurBtc();
     }
 
     componentWillReceiveProps(nextProps) {
+      console.log('componentWillReceiveProps(nextProps)', nextProps)
         this.setState({
             charts: nextProps.krb.krb.charts,
             payments: nextProps.krb.krb.payments,
             stats:  nextProps.krb.krb.stats,
-            rate: nextProps.krbbtc.krbBTC.Data.LastPrice / nextProps.usdbtc.usdBTC
+            rate: nextProps.krbbtc.krbBTC.Data.LastPrice / nextProps.usdbtc.usdBTC,
+            usdBTC: nextProps.usdbtc.usdBTC,
+            krbBTC: nextProps.krbbtc.krbBTC.Data.LastPrice,
+            uahBTC: nextProps.uahbtc.uahBTC.bpi.UAH.rate,
+            eurBTC: nextProps.eurbtc.eurBTC.bpi.EUR.rate,
         })
     }
 
@@ -157,8 +166,10 @@ class KRB extends Component {
     render() {
         if(!Object.getOwnPropertyNames(this.props.krb).length) {return <div></div>;}
 
+
         return (
             <div style={styles.component}>
+            <div><p>Bitcoin Price BTC/USD ({_.round(1 / this.state.usdBTC, 2)}) BTC/EUR ({this.state.eurBTC}) BTC/UAH ({this.state.uahBTC})</p></div>
                 KRB ( {_.round(this.state.rate, 4)} USD )
                 {/*console.log(this.state)*/}
                 {this._getKrbSatsTable()}
@@ -179,12 +190,12 @@ class KRB extends Component {
     }
 }
 
-function mapStateToProps({ krb, krbbtc, usdbtc }) {
-    return { krb, krbbtc, usdbtc };
+function mapStateToProps({ krb, krbbtc, uahbtc, usdbtc, eurbtc }) {
+    return { krb, krbbtc, uahbtc, usdbtc, eurbtc };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchKrb, fetchKrbBtc, fetchUsdBtc }, dispatch);
+    return bindActionCreators({ fetchKrb, fetchKrbBtc, fetchUsdBtc, fetchUahBtc, fetchEurBtc }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(KRB);

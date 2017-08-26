@@ -26,11 +26,14 @@
     "axios": "^0.16.1",
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
+    "curl": "^0.1.4",
     "express": "^4.15.3",
+    "fs": "0.0.1-security",
     "inline-style-prefixer": "^3.0.5",
     "lodash": "^4.17.4",
     "material-ui": "^0.17.4",
     "md5": "^2.2.1",
+    "net": "^1.0.2",
     "react": "^15.4.2",
     "react-bootstrap": "^0.31.1",
     "react-dom": "^15.4.2",
@@ -41,6 +44,8 @@
     "react-tap-event-plugin": "^2.0.1",
     "react-tooltip": "^3.3.0",
     "redux": "^3.6.0",
-    "redux-promise": "^0.5.3"
+    "redux-promise": "^0.5.3",
+    "request": "^2.81.0",
+    "tls": "0.0.1"
   }
 }
