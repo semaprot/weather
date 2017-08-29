@@ -169,7 +169,6 @@ class KRB extends Component {
 
         return (
             <div style={styles.component}>
-            <div><p>Bitcoin Price BTC/USD ({_.round(1 / this.state.usdBTC, 2)}) BTC/EUR ({this.state.eurBTC}) BTC/UAH ({this.state.uahBTC})</p></div>
                 KRB ( {_.round(this.state.rate, 4)} USD )
                 {/*console.log(this.state)*/}
                 {this._getKrbSatsTable()}

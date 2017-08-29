@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Ticker from '../containers/ticker'
 import KrbStat from '../containers/krb_stat'
 import XmrStat from '../containers/xmr_stat'
 
@@ -19,10 +20,10 @@ export default class App extends Component {
       <div>
         {/*<SearchBar />*/}
         {/*<WeatherList />*/}
-        {<KrbStat />}
+        {<Ticker />}
         {<XmrStat />}
+        {<KrbStat />}
           {/*this._replaceAdress('4AF4HTbwQ3d9SbdKNUsPU39HTuLwEMtcY3mmTwtufSPPDbqBsUSsskq7tXDfNDZ8bj6T3Wyv9yY2xcH8FN2i36ZjD2RW4e6.IP42')*/}
-
         <hr />
       </div>
     );
