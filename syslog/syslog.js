@@ -15,7 +15,7 @@ console.log(address);
 
 var net = require('net'),
     host = address,
-    port = 5000,
+    port = 5005,
     unixsocket = '/tmp/workers-logs.sock';
 
 var log = function(who, what) {
