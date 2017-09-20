@@ -39,7 +39,7 @@ var echo = function(socket) {
   socket.on('data', function(data) {
     // data is a Buffer object
     var textChunk = decoder.write(data);
-    console.log('[socket on data]', textChunk);
+    console.log('[socket receive data]', textChunk);
   });
   socket.on('end', function() {
     // emitted when the other end sends a FIN packet
