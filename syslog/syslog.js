@@ -62,8 +62,8 @@ var echo = function(socket) {
                 {"TableName":"Workers",
                     "Item":{
                         "workerID" : {"S": workerStatsList[3].replace(/\[.*\].*/, '').replace(/worker@/, '')},
-                        "date" : {"S": workerStatsList[4].replace(/\[/, '')},
-                        "time" : {"S": workerStatsList[5].replace(/\]/, '')},
+                        "logDate" : {"S": workerStatsList[4].replace(/\[/, '')},
+                        "logTime" : {"S": workerStatsList[5].replace(/\]/, '')},
                         "accepted"  : {"S": workerStatsList[7] + ' ' + workerStatsList[8].replace(/,/, '')},
                         "Hs": {"N": workerStatsList[9]},
                         "diff": {"N": workerStatsList[13]}
