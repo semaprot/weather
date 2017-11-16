@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Ticker from '../containers/ticker'
 import KrbStat from '../containers/krb_stat'
 import XmrStat from '../containers/xmr_stat'
+import ZecStat from '../containers/zec_stat'
 
 export default class App extends Component {
     _replaceAdress(str) {
@@ -22,7 +23,8 @@ export default class App extends Component {
         {/*<WeatherList />*/}
         {<Ticker />}
         {<XmrStat />}
-        {<KrbStat />}
+        {<ZecStat />}
+        {/*<KrbStat />*/}
           {/*this._replaceAdress('4AF4HTbwQ3d9SbdKNUsPU39HTuLwEMtcY3mmTwtufSPPDbqBsUSsskq7tXDfNDZ8bj6T3Wyv9yY2xcH8FN2i36ZjD2RW4e6.IP42')*/}
         <hr />
       </div>

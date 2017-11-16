@@ -43,15 +43,15 @@ class Ticker extends Component {
 
     componentWillReceiveProps(nextProps) {
       // console.log('componentWillReceiveProps(nextProps)', nextProps)
-        this.setState({
-            rate: nextProps.krbbtc.krbBTC.Data.LastPrice / nextProps.usdbtc.usdBTC,
-            usdBTC: nextProps.usdbtc.usdBTC,
-            krbBTC: nextProps.krbbtc.krbBTC.Data.LastPrice,
-            uahBTC: nextProps.uahbtc.uahBTC.bpi.UAH.rate,
-            eurBTC: nextProps.eurbtc.eurBTC.bpi.EUR.rate,
-            tickerUSD: nextProps.xmrusd.xmrUSD.ticker,
-            tickerEUR: nextProps.xmreur.xmrEUR.ticker
-        })
+      this.setState({
+          rate: nextProps.krbbtc.krbBTC.Data.LastPrice / nextProps.usdbtc.usdBTC,
+          usdBTC: nextProps.usdbtc.usdBTC,
+          krbBTC: nextProps.krbbtc.krbBTC.Data.LastPrice,
+          uahBTC: nextProps.uahbtc.uahBTC.bpi.UAH.rate,
+          eurBTC: nextProps.eurbtc.eurBTC.bpi.EUR.rate,
+          tickerUSD: nextProps.xmrusd.xmrUSD.ticker,
+          tickerEUR: nextProps.xmreur.xmrEUR.ticker
+      })
     }
 
     componentDidMount() {
@@ -76,12 +76,9 @@ class Ticker extends Component {
         return (
             <div style={styles.component}>
             <div><p>Tickers
-              XMR/USD ({_.round(this.state.tickerUSD.price, 2)})
-              XMR/EUR ({_.round(this.state.tickerEUR.price, 2)})
               BTC/USD ({_.round(1 / this.state.usdBTC, 2)})
               BTC/EUR ({this.state.eurBTC})
               BTC/UAH ({this.state.uahBTC})
-              KRB/USD ({_.round(this.state.rate, 4)})
               </p></div>
             </div>
         )

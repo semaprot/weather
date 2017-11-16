@@ -39,7 +39,7 @@ class KRB extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-      console.log('componentWillReceiveProps(nextProps)', nextProps)
+      // console.log('componentWillReceiveProps(nextProps)', nextProps)
         this.setState({
             charts: nextProps.krb.krb.charts,
             payments: nextProps.krb.krb.payments,

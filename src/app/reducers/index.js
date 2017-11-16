@@ -9,6 +9,9 @@ import XmrStatReducer from './reducer_xmr_stat';
 import XmrBalanceReducer from './reducer_xmr_balance';
 import XmrUsdReducer from './reducer_xmr_usd';
 import XmrEurReducer from './reducer_xmr_eur';
+import ZecStatReducer from './reducer_zec_stat';
+import ZecWorkersReducer from './reducer_zec_workers';
+import ZecPricesReducer from './reducer_zec_prices';
 
 const rootReducer = combineReducers({
   weather: WeatherReducer,
@@ -21,6 +24,9 @@ const rootReducer = combineReducers({
   xmrBalance: XmrBalanceReducer,
   xmrusd: XmrUsdReducer,
   xmreur: XmrEurReducer,
+  zecStat: ZecStatReducer,
+  zecWorkers: ZecWorkersReducer,
+  zecPrices: ZecPricesReducer,
 });
 
 export default rootReducer;
