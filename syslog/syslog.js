@@ -69,14 +69,8 @@ var echo = function(socket) {
                         "diff": {"N": workerStatsList[13]}
                     }
                 }
-                , function(response,result) {
-                    response.on('data', function(chunk){
-                        //console.log(""+chunk);
-                    });
-                    result.on('ready', function(data){
-                        //console.log("Error:" + data.error);
-                        //console.log("ConsumedCapacityUnits:" + data.ConsumedCapacityUnits);
-                    });
+                , function(err, data) {
+                    if (err) console.log(err, err.stack);
                 });
         }
     });
