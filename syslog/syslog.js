@@ -12,11 +12,11 @@ for (var dev in ifaces) {
 
 //console.log(address);
 
-var credentials = {
-    AccessKeyId : "AKIAIVBAO57AHAEMT2WQ",
-    SecretKey   : "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"
-};
-var dynamoDB = require('dynamoDB').DynamoDB(credentials);
+var AWS = require('aws-sdk');
+
+AWS.config.update({region:'us-east-1'});
+
+var dynamoDB = new AWS.DynamoDB();
 
 var net = require('net'),
     host = address,
@@ -59,11 +59,11 @@ var echo = function(socket) {
             // )
 
             dynamoDB.putItem(
-                {"TableName":"Workers",
+                {"TableName":"Miners",
                     "Item":{
                         "workerID" : {"S": workerStatsList[3].replace(/\[.*\].*/, '').replace(/worker@/, '')},
-                        "date" : {"S": workerStatsList[4].replace(/\[/, '')},
-                        "time" : {"S": workerStatsList[5].replace(/\]/, '')},
+                        "eventDate" : {"S": workerStatsList[4].replace(/\[/, '')},
+                        "eventTime" : {"S": workerStatsList[5].replace(/\]/, '')},
                         "accepted"  : {"S": workerStatsList[7] + ' ' + workerStatsList[8].replace(/,/, '')},
                         "Hs": {"N": workerStatsList[9]},
                         "diff": {"N": workerStatsList[13]}
